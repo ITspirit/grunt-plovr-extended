@@ -158,11 +158,9 @@ module.exports = function(grunt) {
     });
 
     configFileContent += '\n}';
-    console.log(this);
     if(this.data.cwd) {
         cwd = this.data.cwd;
         cd_cwd = 'cd ' + cwd + ';';
-        console.log('cwd', cwd);
         configfilename = path.join(cwd, configfilename);
     };
     
