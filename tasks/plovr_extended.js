@@ -23,8 +23,10 @@ module.exports = function(grunt) {
         grunt.file.delete(configfilename);
     }  
 
-    var configFileContent = '{\n';
-    var cwd = '';
+    var configFileContent = '{\n',
+      cwd,
+      cd_cwd = '';
+
 
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({});
@@ -156,19 +158,19 @@ module.exports = function(grunt) {
     });
 
     configFileContent += '\n}';
-
-    if(this.data.expand === true) {
-        if(this.data.cwd) {
-            cwd = this.data.cwd;
-            configfilename = path.join(cwd, configfilename);
-        }
+    console.log(this);
+    if(this.data.cwd) {
+        cwd = this.data.cwd;
+        cd_cwd = 'cd ' + cwd + ';';
+        console.log('cwd', cwd);
+        configfilename = path.join(cwd, configfilename);
     };
     
     // Write configFileContent
     grunt.file.write(configfilename,configFileContent);
 
         // do the plovr job
-    var cmd = 'cd ' + cwd + '; java -jar ' + __dirname + '/../bin/plovr.jar build ' + configfilename + options_;
+    var cmd = cd_cwd + ' java -jar ' + __dirname + '/../bin/plovr.jar build ' + configfilename + options_;
 
     var prog = shell.exec(cmd);
     // delete temporary configfile
