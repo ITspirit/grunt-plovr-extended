@@ -160,7 +160,7 @@ module.exports = function(grunt) {
     configFileContent += '\n}';
     if(this.data.cwd) {
         cwd = this.data.cwd;
-        cd_cwd = 'cd ' + cwd + ';';
+        cd_cwd = 'cd ' + cwd + '&&';
         configfilename = path.join(cwd, configfilename);
     };
     
