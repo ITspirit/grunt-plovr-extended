@@ -39,17 +39,23 @@ grunt.initConfig({
 
 Generally, you can use every option plovr supports.
 
-#### options.separator
+#### source-map-base-url
 Type: `String`
-Default value: `',  '`
 
-A string value that is used to do something with whatever.
-
-#### options.punctuation
+#### module-source-map-name
 Type: `String`
-Default value: `'.'`
 
-A string value that is used to do something else with whatever else.
+#### create_source_map
+Type: `String`
+
+#### location-mapping
+Type: `Object`
+
+```js
+{'0.0.0.1/': '/0.0.0.1/app/'}
+```
+Rename each 0.0.0.1 to /0.0.0.1/app/ in every sourcemap.
+
 
 ### Usage Examples
 
@@ -93,8 +99,92 @@ grunt.initConfig({
 });
 ```
 
+
+#### Example Angular Application
+```js
+grunt.initConfig({
+    plovr_extended: {
+    cwd: path.join('inputs'),
+    options: {
+        id: 'app',
+        paths: path.join('paths'),
+        externs: [
+            path.join('node_modules', 'closure-compiler', 'node_modules',
+              'google-closure-compiler', 'contrib', 'externs', 'angular-1.4.js'),
+            path.join('node_modules', 'closure-compiler', 'node_modules',
+              'google-closure-compiler', 'contrib', 'externs', 'angular-1.4-http-promise_templated.js'),
+            path.join('node_modules', 'closure-compiler', 'node_modules',
+              'google-closure-compiler', 'contrib', 'externs', 'angular-1.4-mocks.js'),
+            path.join('node_modules', 'closure-compiler', 'node_modules',
+              'google-closure-compiler', 'contrib', 'externs', 'angular-1.4-q_templated.js')
+        ],
+        mode: 'ADVANCED',
+        debug: false,
+        define: {
+            'goog.DEBUG': false
+        },
+        checks: {
+            checkDebuggerStatement: 'ERROR',
+            checkRegExp: 'OFF',
+            checkTypes: 'ERROR',
+            checkVars: 'ERROR',
+            closureDepMethodUsageChecks: 'ERROR',
+            conformanceViolations: 'ERROR',
+            const: 'ERROR',
+            constantProperty: 'ERROR',
+            deprecated: 'ERROR',
+            deprecatedAnnotations: 'ERROR',
+            duplicate: 'ERROR',
+            es3: 'ERROR',
+            extraRequire: 'ERROR',
+            fileoverviewTags: 'ERROR',
+            globalThis: 'ERROR',
+            internetExplorerChecks: 'ERROR',
+            invalidCasts: 'ERROR',
+            misplacedTypeAnnotation: 'ERROR',
+            missingProperties: 'OFF',
+            missingProvide: 'ERROR',
+            missingRequire: 'ERROR',
+            missingReturn: 'ERROR',
+            newCheckTypes: 'ERROR',
+            nonStandardJsDocs: 'ERROR',
+            reportUnknownTypes: 'OFF',
+            strictModuleDepCheck: 'ERROR',
+            suspiciousCode: 'ERROR',
+            undefinedNames: 'ERROR',
+            undefinedVars: 'ERROR',
+            unknownDefines: 'ERROR',
+            uselessCode: 'ERROR',
+            violatedModuleDep: 'ERROR',
+            visibility: 'ERROR'
+        },
+        'experimental-compiler-options': {
+            languageIn: 'ECMASCRIPT5_STRICT',
+            angularPass: true,
+            colorizeErrorOutput: true,
+            generateExports: true,
+            removeUnusedPrototypePropertiesInExterns: false,
+            externExports: true,
+            removeUnusedPrototypeProperties: false
+        },
+        'source-map-base-url': path.join('urlPath'),
+        'module-source-map-name': '/%s.advanced.min.js.map',
+        'module-output-path': path.join('urlPath') + '/%s.advanced.min.js',
+        'module-production-uri': path.join('urlPath') + '/%s.advanced.min.js',
+        create_source_map: path.join('systemPath'),
+        'location-mapping': {'0.0.0.1/': '/0.0.0.1/app/'},
+        modules: {
+            app: {
+                inputs: path.join('app.js'),
+                deps: []
+            }
+        }
+    }
+});
+```
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-_(Nothing yet)_
+1.0.0 -> Update plovr.jar and add options to gernerate source_maps for each module or standalone app.
